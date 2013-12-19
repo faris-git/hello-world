@@ -39,9 +39,9 @@ window.utils = {
 		},
 		
 		showAlert: function(title, text, className) {
-			$('.alert').removeClass("alert-error alert-warning alert-success alert-info");
+			$('.alert').removeClass("alert-danger alert-warning alert-success alert-info hide");
 			$('.alert').addClass(className);
-			$('.alert').html('<strong>'+title+'</strong>'+text);
+			$('.alert').html('<strong>'+title+'</strong> '+text);
 			$('.alert').show();
 		},
 		

@@ -12,8 +12,8 @@ var db = new DatabaseInstance('localhost', 27017);
 
 exports.findAll = function(req, res) {
 	console.log("--------------------FInd All-------------- ");
-	db.findAll(userCollection, function(err, data){		
-		res.send(data);
+	db.findAll(userCollection, function(err, result){		
+		res.send(result);
 	});
 };
 
@@ -22,8 +22,43 @@ exports.addUser = function(req, res){
 	var user = req.body;
 	console.log("Adding the user:: "+JSON.stringify(user));
 	
-	db.save(userCollection, user, function(err, collection){
-		res.send(result[0].toString("utf8"));
+	db.save(userCollection, user, function(err, result){
+		res.send(result.toString("utf8"));
+	});
+};
+
+exports.updateUser = function(req, res) {
+	var user = req.body;
+	var userId = req.params.userId;
+	delete user.userId;
+	console.log("Updating the user: "+JSON.stringify(user));
+	db.update(userCollection, {'userId':userId}, user, function(err, result) {
+		console.log(result);
+		res.send(result);
+	});
+};
+
+exports.findByUserId = function(req, res) {
+	console.log(req.params);
+	var userId = req.params.userId;
+	console.log(userId);
+	
+	db.search(userCollection, {'userId':userId}, function(err, result) {
+		if (err)
+			res.send({'error':err});
+		else {
+			console.log(JSON.stringify(result[0]));
+			res.send(JSON.stringify(result[0]));
+		}
+	});
+};
+
+exports.deleteUser = function(req, res) {
+	var userId = req.params.userId;
+	
+	db.remove(userCollection, {'userId':userId}, function(err, result) {
+		console.log(JSON.stringify(result));
+		res.send(JSON.stringify(result));
 	});
 };
 

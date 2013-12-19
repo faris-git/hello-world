@@ -17,7 +17,10 @@ app.configure(function() {
 });
 
 app.get('/users', service.findAll);
-//app.post('/user', service.addUser);
+app.get('/user/:userId', service.findByUserId);
+app.post('/user', service.addUser);
+app.put('/user/:userId', service.updateUser);
+app.delete('/user/:userId', service.deleteUser);
 
 http.createServer(app).listen(app.get('port'), function() {
 	console.log("Express server listening on port: "+app.get('port'));

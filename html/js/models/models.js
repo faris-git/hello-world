@@ -1,6 +1,6 @@
 
 window.User = Backbone.Model.extend({
-	urlRoot: "/users",
+	urlRoot: "/user",
 	idAttribute: "userId",
 	initialize: function() {
 		this.validators = {};
@@ -18,10 +18,11 @@ window.User = Backbone.Model.extend({
 	},
 	defaults: {
 		userId: null,
+		userName:"",
 		firstName:"",
 		lastName:"",
 		address:"",
-		city:"Kšln",
+		city:"",
 		country:"Germany",
 		phone:""
 	}

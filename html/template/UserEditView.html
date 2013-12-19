@@ -1,0 +1,70 @@
+
+<div class="row-fluid">
+	<form class="span12" role="form">
+		<fieldset>
+			<legend>User</legend>
+			<br/>
+			<div class="row">
+				<div class="col-xs-8">		
+					<div class="form-group">
+						<label for="userId" class="control-label">User ID:</label>
+						<input id="userId" class="form-control" name="userId" type="text" value="<%= userId == null ? '': userId %>" disabled />
+					</div>
+					
+					<div class="form-group">
+						<label for="userName" class="control-label">User Name:</label>
+						<input id="userName" class="form-control" name="userName" type="text" value="<%= userName == null ? '': userName %>" />
+					</div>
+					
+					<div class="form-group">
+						<label for="firstName" class="control-label">First Name:</label>
+						<input id="firstName" class="form-control" name="firstName" type="text" value="<%= firstName == null ? '': firstName %>" />
+					</div>
+					
+					<div class="form-group">
+						<label for="lastName" class="control-label">Last Name:</label>
+						<input id="lastName" class="form-control" name="lastName" type="text" value="<%= lastName == null ? '': lastName %>" />
+					</div>
+					
+					<div class="form-group">
+						<label for="address" class="control-label">Address:</label>
+						<textarea id="address" class="form-control" name="address" rows="5" ><%= address == null ? '': address %></textarea>
+					</div>
+					
+					<div class="form-group">
+						<label for="phone" class="control-label">Phone:</label>
+						<input id="phone" class="form-control" name="phone" type="text" value="<%= phone == null ? '': phone %>" />
+					</div>
+					
+					<div class="form-group">
+						<label for="city" class="control-label">City:</label>
+						<input id="city" class="form-control" name="city" type="text" value="<%= city == null ? '': city %>" />
+					</div>
+					
+					<div class="form-group">
+						<label for="country" class="control-label">Country:</label>
+						<input id="country" class="form-control" name="country" type="text" value="<%= country == null ? '': country %>" />
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label for="photo" class="control-label">Photo:</label>
+						<img src="holder.js/100%x180" class="form-control img-thumbnail"/>
+					</div>
+				</div>
+			</div>
+			
+			<a href="#" class="btn btn-primary save">Save</a>
+			<a href="#" class="btn delete">Delete</a>
+		</fieldset>
+		
+	</form>
+</div>
+<br/><br/>
+<div class="row-fluid status-bar">
+	<div class="span12">
+		<div class="alert alert-success hide">
+			<b>Success!</b> User saved successfully..
+		</div>
+	</div>
+</div>
