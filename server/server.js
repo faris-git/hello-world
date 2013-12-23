@@ -7,6 +7,8 @@ var express = require('express'),
 	http = require('http'),
 	service = require('./services/common');
 
+var useMongoose = true;
+
 var app = express();
 
 app.configure(function() {
@@ -16,11 +18,33 @@ app.configure(function() {
 	app.use(express.static(path.join(__dirname, '../html')));
 });
 
-app.get('/users', service.findAll);
-app.get('/user/:userId', service.findByUserId);
-app.post('/user', service.addUser);
-app.put('/user/:userId', service.updateUser);
-app.delete('/user/:userId', service.deleteUser);
+if(useMongoose) {
+	var mongoose = require('mongoose');
+	
+	var db = mongoose.connection;
+	
+	db.on('error', console.error);
+	db.once('open', function() {		
+		var user = require('./services/user');
+		
+		app.get('/users', user.findAll);
+		app.get('/user/:userId', user.findByUserId);
+		app.post('/user', user.addUser);
+		app.delete('/user/:userId', user.removeByUserId);
+	});
+	
+	mongoose.connect('mongodb://localhost/nodejs_template');
+}
+
+if(useMongoose) {
+	//
+} else {
+	app.get('/users', service.findAll);
+	app.get('/user/:userId', service.findByUserId);
+	app.post('/user', service.addUser);
+	app.put('/user/:userId', service.updateUser);
+	app.delete('/user/:userId', service.deleteUser);
+}
 
 http.createServer(app).listen(app.get('port'), function() {
 	console.log("Express server listening on port: "+app.get('port'));

@@ -39,7 +39,8 @@ window.UserEditView = Backbone.View.extend({
 	events:{
 		'change'		: 'change',
 		'click .save'	: 'save',
-		'click .delete'	: 'remove'
+		'click .delete'	: 'remove',
+		'drop #picture'	: 'dropHandler'
 	},
 	change: function(event) {
 		utils.hideAlert();
@@ -76,6 +77,22 @@ window.UserEditView = Backbone.View.extend({
 			}
 		});
 		return false;
+	},
+	dropHandler: function(event) {
+		event.stopPropagation();
+		event.preventDefault();
+		var e = event.originalEvent;
+		e.dataTransfer.dropEffect = 'copy';
+		this.pictureFile = e.dataTransfer.files[0];
+		
+		// Read the image from the local file system and display it in the image box
+		var reader = new FileReader();
+		reader.onloadend = function() {
+			$('#picture').attr('src', reader.result);
+		};
+		
+		/**http://www.tweetegy.com/2012/01/basic-multiple-image-gallery-upload-html5-and-backbone-application/ */
+		reader.readAsDataURL(this.pictureFile);
 	}
 });
 

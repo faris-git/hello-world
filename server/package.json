@@ -6,7 +6,8 @@
 	"dependencies":{
 		"express": "",
 		"mongodb": "",
-		"socket.io": ""
+		"socket.io": "",
+		"mongoose":""
 	},
 	"engines":{
 		"node":"",

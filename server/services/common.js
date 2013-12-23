@@ -8,8 +8,6 @@ var userCollection = 'user';
 
 var db = new DatabaseInstance('localhost', 27017);
 
-	
-
 exports.findAll = function(req, res) {
 	console.log("--------------------FInd All-------------- ");
 	db.findAll(userCollection, function(err, result){		

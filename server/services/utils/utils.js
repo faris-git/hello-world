@@ -5,11 +5,19 @@
 
 var mongoose = require('mongoose');
 
-Utils.prototype.getSchemaModel = function(collectionName, object) {
+Utils = {
+		getSchemaModel: function(collectionName, object, callback) {
+			var schema = new mongoose.Schema(object);
+			console.log(mongoose.model(collectionName, schema));
+			callback(mongoose.model(collectionName, schema));
+		}
+};
+
+/*Utils.prototype.getSchemaModel = function(collectionName, object) {
 	var schema = new mongoose.Schema(object);
 	
 	return mongoose.model(collectionName, schema);
-};
+};*/
 
 /**
  * Example as shown below
@@ -28,4 +36,4 @@ var userSchema = new mongoose.Schema({
 var User = mongoose.model('User', userSchema);
 */
 
-exports.Utils = Utils;
+module.exports.Utils = Utils;
