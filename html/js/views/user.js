@@ -37,10 +37,12 @@ window.UserEditView = Backbone.View.extend({
 		return this;
 	},
 	events:{
-		'change'		: 'change',
-		'click .save'	: 'save',
-		'click .delete'	: 'remove',
-		'drop #picture'	: 'dropHandler'
+		'change'				: 'change',
+		'click .save'			: 'save',
+		'click .update'			: 'update',
+		'click .delete'			: 'remove',
+		'drop #picture'			: 'dropHandler',
+		'change #pictureFile'	: 'imageHandler'
 	},
 	change: function(event) {
 		utils.hideAlert();
@@ -67,6 +69,18 @@ window.UserEditView = Backbone.View.extend({
 		
 		return false;
 	},
+	update: function(e) {
+		var self = this;
+		console.log(self.model);
+		var userId = self.model.get('userId');
+		self.model.save(userId, {
+			success: function(data){
+				utils.showAlert('Success!', 'User updated successfully', 'alert-success');
+			}, error: function(error) {
+				utils.showAlert('Error', 'An error occurred while trying to update this item', 'alert-danger');
+			}
+		});
+	},
 	remove: function(e) {
 		var self = this;
 		
@@ -84,7 +98,7 @@ window.UserEditView = Backbone.View.extend({
 		var e = event.originalEvent;
 		e.dataTransfer.dropEffect = 'copy';
 		this.pictureFile = e.dataTransfer.files[0];
-		
+		console.log("picture file"+ this.pictureFile);
 		// Read the image from the local file system and display it in the image box
 		var reader = new FileReader();
 		reader.onloadend = function() {
@@ -93,6 +107,31 @@ window.UserEditView = Backbone.View.extend({
 		
 		/**http://www.tweetegy.com/2012/01/basic-multiple-image-gallery-upload-html5-and-backbone-application/ */
 		reader.readAsDataURL(this.pictureFile);
+		return false;
+	},
+	imageHandler: function(event) {
+		event.stopPropagation();
+		event.preventDefault();
+		
+		var e = event.originalEvent;
+		var self = this;
+		var target = event.target;
+		var targetfieldname = $(target).attr('name');
+		if(targetfieldname)
+			targetfieldname = targetfieldname.replace('File', '');
+		
+		self[target.name] = e.target.files[0];
+		
+		var reader = new FileReader();
+		reader.onloadend = function() {
+			$('#'+targetfieldname).attr('src', reader.result);
+			var change = {};
+			change[targetfieldname] = reader.result;
+			
+			self.model.set(change);
+		};
+		
+		reader.readAsDataURL(self[target.name]);
 	}
 });
 
@@ -144,7 +183,7 @@ window.UserListItemView = Backbone.View.extend({
 			userId = $(e.target).parent().attr('data');
 		
 		self.model.destroy({
-			success: function(){				
+			success: function(){
 				alert("Deleted the user successfully..");
 				Backbone.history.loadUrl();
 			}

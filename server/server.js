@@ -30,6 +30,7 @@ if(useMongoose) {
 		app.get('/users', user.findAll);
 		app.get('/user/:userId', user.findByUserId);
 		app.post('/user', user.addUser);
+		app.put('/user/:userId', user.updateUser);
 		app.delete('/user/:userId', user.removeByUserId);
 	});
 	

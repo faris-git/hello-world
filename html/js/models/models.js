@@ -24,7 +24,8 @@ window.User = Backbone.Model.extend({
 		address:"",
 		city:"",
 		country:"Germany",
-		phone:""
+		phone:"",
+		picture:""
 	}
 });
 

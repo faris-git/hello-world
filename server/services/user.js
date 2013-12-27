@@ -15,12 +15,11 @@ var userSchema =  new mongoose.Schema({
 	address: String,
 	phone: String,
 	mobile: String,
+	picture: String,
 	createdDate:{type: Date, 'default': Date.now}
 });
 
 var user = mongoose.model('User', userSchema);
-
-console.log("User-- "+JSON.stringify(user));
 
 user.findAll = function(req, res) {
 	user.find(function(err, results) {		
@@ -55,11 +54,12 @@ user.removeByUserId = function(req, res) {
 
 user.addUser = function(req, res) {
 	var user_ = req.body;
+	console.log(user_);
 	counters.getNextSequence('users', function(err, userId) {
 		console.log("UserId:: "+userId);
 		console.log(counters);
 		user_.userId = userId;
-		console.log(user_);
+		//console.log(user_);
 		new user(user_).save(function(err, user) {
 			if(err)
 				res.send({'Error': err});
@@ -69,5 +69,25 @@ user.addUser = function(req, res) {
 	});
 };
 
+user.updateUser = function(req, res) {
+	var user_ = req.body;
+	var userId = req.params.userId;
+	console.log("-------------- userId:: "+userId);
+	user.update({userId:userId}, user_,{multi:true},function(err, user) {
+		console.log(user);
+		if(err)
+			res.send({'Error': err});
+		else
+			res.send(user);
+	});
+	
+	
+};
+
 module.exports = user;
 
+/**
+ * Refer this for storin image using fs
+ * https://gist.github.com/aheckmann/2408370
+ */
+ 

@@ -49,13 +49,13 @@
 				<div class="col-xs-4">
 					<div class="form-group">
 						<label for="photo" class="control-label">Photo:</label>
-						<img id="picture" style="height:150px;" src="holder.js/100%x180" class="form-control img-thumbnail"/>
-						<input type="file" name="picture" />
+						<img id="picture" style="height:150px;" src="<%= picture == null ? '' : picture %>" class="form-control img-thumbnail"/>
+						<input type="file" name="pictureFile" id="pictureFile" value="Upload" />
 					</div>
 				</div>
 			</div>
 			
-			<a href="#" class="btn btn-primary save">Save</a>
+			<a href="#" class="btn btn-primary <%= userId == null ? 'save' : 'update' %>">Save</a>
 			<a href="#" class="btn delete">Delete</a>
 		</fieldset>
 		
