@@ -80,6 +80,7 @@ window.UserEditView = Backbone.View.extend({
 				utils.showAlert('Error', 'An error occurred while trying to update this item', 'alert-danger');
 			}
 		});
+		return false;
 	},
 	remove: function(e) {
 		var self = this;

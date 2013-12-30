@@ -8,17 +8,22 @@ var AppRouter = Backbone.Router.extend({
 		"users"			: "userList",
 		"user/add"		: "addUser",
 		"user/:id"		: "viewUser",
-		"user/edit/:id"	: "updateUser"
+		"user/edit/:id"	: "updateUser",
+		"login"			: "login"
 	},
 	initialize: function(){
 		this.headerView = new HeaderView();
 		$('.header').html(this.headerView.el);
 	},
-	
 	home: function(id) {
 		this.homeView = new HomeView();
 		
 		$('#content').html(this.homeView.el);
+	},
+	login: function() {
+		this.loginView = new LoginView({model:new Login()});
+		
+		$('#content').html(this.loginView.el);
 	},
 	userList: function(id) {
 		var userList = new UserCollection();
@@ -56,7 +61,7 @@ var AppRouter = Backbone.Router.extend({
 	}
 });
 
-utils.loadTemplate(['HomeView', 'HeaderView', 'UserListItemView', 'UserView', 'UserEditView'], function() {
+utils.loadTemplate(['HomeView', 'HeaderView', 'UserListItemView', 'UserView', 'UserEditView', 'LoginView'], function() {
 	app = new AppRouter();
 	Backbone.history.start();
 });

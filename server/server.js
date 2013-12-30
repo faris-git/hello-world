@@ -5,6 +5,9 @@
 var express = require('express'),
 	path = require('path'),
 	http = require('http'),
+	passport = require('passport'),
+	flash = require('connect-flash'),
+	auth = require('./services/utils/authentication'),
 	service = require('./services/common');
 
 var useMongoose = true;
@@ -14,8 +17,14 @@ var app = express();
 app.configure(function() {
 	app.set('port', process.env.PORT || 3000);
 	app.use(express.logger('dev'));
-	app.use(express.bodyParser()),
+	app.use(express.bodyParser());
+	app.use(express.cookieParser());
+	app.use(express.methodOverride());
 	app.use(express.static(path.join(__dirname, '../html')));
+	app.use(express.session({secret: 'SECRET'}));
+	app.use(flash());
+	app.use(passport.initialize());
+	app.use(passport.session());
 });
 
 if(useMongoose) {
@@ -25,13 +34,28 @@ if(useMongoose) {
 	
 	db.on('error', console.error);
 	db.once('open', function() {		
-		var user = require('./services/user');
+		require('./services/user')(app);
 		
-		app.get('/users', user.findAll);
-		app.get('/user/:userId', user.findByUserId);
-		app.post('/user', user.addUser);
-		app.put('/user/:userId', user.updateUser);
-		app.delete('/user/:userId', user.removeByUserId);
+		/**
+		 * The below section is for login and logout 
+		 */
+		app.get('/login', function(req, res) {
+			res.render('login', {user: req.user, error: res.local('error') || req.flash('error')});
+		});
+		
+		app.post('/login', 
+			passport.authenticate('local', {
+				successRedirect: '/',
+				failureRedirect: '/#login',
+				failureFlash: true,
+				successFlash: "Welcome !"
+			})
+		);
+		
+		app.get('/logout', function(req, res) {
+			req.logOut();
+			res.redirect('/');
+		});
 	});
 	
 	mongoose.connect('mongodb://localhost/nodejs_template');
@@ -51,3 +75,9 @@ http.createServer(app).listen(app.get('port'), function() {
 	console.log("Express server listening on port: "+app.get('port'));
 });
 
+/**
+ * Refer this link for passport app:
+ * https://github.com/ArnaudRinquin/LostAndFound
+ * https://github.com/DanialK/PassportJS-Authentication
+ *
+ */

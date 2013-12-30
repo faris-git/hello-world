@@ -36,3 +36,15 @@ window.UserCollection = Backbone.Collection.extend({
 	model: User,
 	url: "/users"
 });
+
+window.Login = Backbone.Model.extend({
+	urlRoot: '/login',
+	initialize: function() {
+		
+	},
+	defaults:{
+		userName:"",
+		password:"",
+		role:"user"
+	}
+});
