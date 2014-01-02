@@ -55,7 +55,7 @@ window.UserEditView = Backbone.View.extend({
 		
 		//Add validation rule here
 	},
-	save: function(){		
+	save: function(){
 		this.model.save(null, {
 			success: function(model) {				
 				//self.render();

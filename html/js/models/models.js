@@ -19,6 +19,7 @@ window.User = Backbone.Model.extend({
 	defaults: {
 		userId: null,
 		userName:"",
+		password:"",
 		firstName:"",
 		lastName:"",
 		address:"",
@@ -46,5 +47,25 @@ window.Login = Backbone.Model.extend({
 		userName:"",
 		password:"",
 		role:"user"
+	}
+});
+
+window.Logout = Backbone.Model.extend({
+	urlRoot: '/logout'
+});
+
+window.UserProfile = Backbone.Model.extend({
+	urlRoot: "/profile",
+	idAttribute: "userId",
+	defaults: {
+		userId: null,
+		userName:"",
+		firstName:"",
+		lastName:"",
+		address:"",
+		city:"",
+		country:"",
+		phone:"",
+		loggedIn:false
 	}
 });

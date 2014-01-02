@@ -1,5 +1,6 @@
 /**
  * Main router file
+ * Refer: https://github.com/ccoenraets/nodecellar
  */
 
 var AppRouter = Backbone.Router.extend({
@@ -9,10 +10,24 @@ var AppRouter = Backbone.Router.extend({
 		"user/add"		: "addUser",
 		"user/:id"		: "viewUser",
 		"user/edit/:id"	: "updateUser",
-		"login"			: "login"
+		"login"			: "login",
+		"logout"		: "logout"
 	},
 	initialize: function(){
-		this.headerView = new HeaderView();
+		
+		if(!window.userProfile) {
+			var userProfile = new window.UserProfile();
+			
+			userProfile.fetch({success: function(profile) {
+				profile.set({loggedIn:true});
+				window.userProfile = profile;
+			}, error: function(model, error) {				
+				model.set({loggedIn: false});
+				window.userProfile = model;
+			}});
+		}
+		
+		this.headerView = new HeaderView({model: window.userProfile});
 		$('.header').html(this.headerView.el);
 	},
 	home: function(id) {
@@ -24,6 +39,13 @@ var AppRouter = Backbone.Router.extend({
 		this.loginView = new LoginView({model:new Login()});
 		
 		$('#content').html(this.loginView.el);
+	},
+	logout: function() {
+		var logout = new Logout();
+		
+		logout.fetch({success: function(){			
+			app.navigate('/',{trigger:true,replace:true});
+		}});
 	},
 	userList: function(id) {
 		var userList = new UserCollection();
@@ -62,6 +84,17 @@ var AppRouter = Backbone.Router.extend({
 });
 
 utils.loadTemplate(['HomeView', 'HeaderView', 'UserListItemView', 'UserView', 'UserEditView', 'LoginView'], function() {
-	app = new AppRouter();
-	Backbone.history.start();
+	var userProfile = new window.UserProfile();
+	
+	userProfile.fetch({success: function(profile) {		
+		profile.set({loggedIn:true});
+		window.userProfile = profile;
+		app = new AppRouter();
+		Backbone.history.start();
+	}, error: function(model, error) {
+		model.set({loggedIn: false});
+		window.userProfile = model;
+		app = new AppRouter();
+		Backbone.history.start();
+	}});
 });

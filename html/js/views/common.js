@@ -7,7 +7,8 @@ window.HeaderView = Backbone.View.extend({
 		this.render();
 	},
 	render: function() {
-		$(this.el).html(this.template());
+		var model = this.model.toJSON();
+		$(this.el).html(this.template(model));
 		return this;
 	}
 });
@@ -43,9 +44,12 @@ window.LoginView = Backbone.View.extend({
 			console.log(self);
 			self.model.save(null, {
 				success: function(model) {
+					console.log("Success");
+					app.navigate("/",{trigger:true,replace:true});
 					utils.showAlert('Success!', 'Logged in successfully', 'alert-success');
 				},
-				error:function() {
+				error:function(error) {
+					console.log("Errror"+error);
 					utils.showAlert('Error', 'Failure Attempt', 'alert-danger');
 				}
 			});
