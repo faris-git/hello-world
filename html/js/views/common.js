@@ -67,3 +67,58 @@ window.LoginView = Backbone.View.extend({
 		//Add validation rule here
 	}
 });
+
+/**
+ * File Upload View
+ */
+window.FileUploadView = Backbone.View.extend({
+	initialize: function() {
+		this.render();
+	},
+	render: function() {
+		$(this.el).html(this.template());
+		
+		
+		return this;
+	},
+	events:{
+		'click .submit': 'uploadFile'
+	},
+	uploadFile: function(e) {
+		var self = this;
+		
+		var options = {
+			beforeSend: function() {
+				$('.progress', $(self.el)).removeClass('hide');
+				$('.progress', $(self.el)).addClass('active').show();
+				
+				$('#message').html('');					
+			},
+			uploadProgress: function(event, position, total, percentComplete) {					
+				$('.progress-bar', $(self.el)).css('width',percentComplete+'%');							
+			},
+			complete: function(response) {				
+				$('.progress', $(self.el)).removeClass('active progress-striped');				
+			}, 
+			success: function() {
+				$('#message').html('Successfully your file is uploaded !!');
+			},
+			error: function(error) {
+				var errorMessage = JSON.parse(error.responseText);
+				console.log(errorMessage.message);
+				$('.progress', $(self.el)).hide();
+				$('#message').html('Error: '+errorMessage.message);
+			}
+		};
+		
+		$('#upload-form').submit(function() { 
+			 
+	        $(this).ajaxSubmit(options); 
+	 
+	        // !!! Important !!! 
+	        // always return false to prevent standard browser submit and page navigation 
+	        return false; 
+	    });
+	}
+});
+

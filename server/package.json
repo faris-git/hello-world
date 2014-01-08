@@ -11,7 +11,8 @@
 		"passport":"",
 		"passport-local":"",
 		"bcrypt":"",
-		"connect-flash":""
+		"connect-flash":"",
+		"xlsx":""
 	},
 	"engines":{
 		"node":"",

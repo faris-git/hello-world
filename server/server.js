@@ -10,6 +10,7 @@ var express = require('express'),
 	user = require('./services/user'),
 	auth = require('./services/utils/authorization'),
 	service = require('./services/common'),
+	filereader = require('./services/utils/filereader'),
 	fs = require('fs');
 
 var configFile = __dirname + '/configuration.json';
@@ -93,6 +94,9 @@ if(useMongoose) {
 			req.logout();
 			res.redirect('/');
 		});
+		
+		//For upload file
+		app.post('/upload', filereader.uploadFile);
 	});
 	
 	mongoose.connect('mongodb://localhost/'+config.mongodb);

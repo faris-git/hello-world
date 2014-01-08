@@ -22,3 +22,8 @@ footer {
 	color: #666;
 	text-shadow: 0 1px 2px #fff;
 }
+
+/** Upload form */
+#progress { position:relative; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }
+#bar { background-color: #B4F5B4; width:0%; height:20px; border-radius: 3px; }
+#percent { position:absolute; display:inline-block; top:3px; left:48%; }

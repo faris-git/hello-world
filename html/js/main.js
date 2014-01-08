@@ -11,7 +11,8 @@ var AppRouter = Backbone.Router.extend({
 		"user/:id"		: "viewUser",
 		"user/edit/:id"	: "updateUser",
 		"login"			: "login",
-		"logout"		: "logout"
+		"logout"		: "logout",
+		"upload"		: "upload"
 	},
 	initialize: function(){
 		
@@ -39,13 +40,6 @@ var AppRouter = Backbone.Router.extend({
 		this.loginView = new LoginView({model:new Login()});
 		
 		$('#content').html(this.loginView.el);
-	},
-	logout: function() {
-		var logout = new Logout();
-		
-		logout.fetch({success: function(){			
-			app.navigate('/',{trigger:true,replace:true});
-		}});
 	},
 	userList: function(id) {
 		var userList = new UserCollection();
@@ -80,10 +74,13 @@ var AppRouter = Backbone.Router.extend({
 		user.fetch({success: function(){			
 			$('#content').html(new UserView({model:user}).el);
 		}});
+	},
+	upload: function(id) {
+		$('#content').html(new FileUploadView().el);
 	}
 });
 
-utils.loadTemplate(['HomeView', 'HeaderView', 'UserListItemView', 'UserView', 'UserEditView', 'LoginView'], function() {
+utils.loadTemplate(['HomeView', 'HeaderView', 'UserListItemView', 'UserView', 'UserEditView', 'LoginView', 'FileUploadView'], function() {
 	var userProfile = new window.UserProfile();
 	
 	userProfile.fetch({success: function(profile) {		
