@@ -69,3 +69,21 @@ window.UserProfile = Backbone.Model.extend({
 		loggedIn:false
 	}
 });
+
+window.FileUpload = Backbone.Model.extend({
+	initialize: function() {
+		
+	},
+	validation: {
+		name: {
+			required: true
+		},
+		myFile: {
+			required: true
+		}
+	},
+	defaults: {
+		name:"",
+		myFile:""
+	}
+});

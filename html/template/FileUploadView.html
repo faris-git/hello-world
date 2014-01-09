@@ -9,12 +9,12 @@
 					
 					<div class="form-group">
 						<label for="name" class="control-label">File Name:</label>
-						<input id="name" class="form-control" name="name" type="text" value="" />
+						<input id="name" class="form-control required" name="name" type="text" value=""  />
 					</div>
 					
 					<div class="form-group">
 						<label for="myFile" class="control-label">File:</label>
-						<input id="myFile" class="form-control" name="myFile" type="file" />
+						<input id="myFile" class="form-control required" name="myFile" type="file" />
 					</div>
 					
 				</div>				
@@ -26,21 +26,21 @@
 					<a href="#" class="btn cancel">Cancel</a>
 				</div>
 			</div>
-			<br/>
-			<div class="row">
-				<div class="col-md-4 col-md-offset-4">
-					<div class="progress progress-striped hide">
-						<div class="progress-bar progress-bar-success" ></div>
-					</div>
-					
-					<br/>
-					 
-					<div id="message"></div>
-				</div>
-			</div>
+			
 			
 		</fieldset>
 		
 	</form>
 </div>
-
+<br/>
+<div class="row">
+	<div class="col-md-4 col-md-offset-4">
+		<div class="progress progress-striped hide">
+			<div class="progress-bar progress-bar-success" ></div>
+		</div>
+		
+		<br/>
+		 
+		<div class="alert" id="message"></div>
+	</div>
+</div>

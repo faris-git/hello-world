@@ -76,10 +76,12 @@ window.FileUploadView = Backbone.View.extend({
 		this.render();
 	},
 	render: function() {
-		$(this.el).html(this.template());
+		var self = this;
+		var model = self.model.toJSON();
 		
+		$(self.el).html(self.template(model));
 		
-		return this;
+		return self;
 	},
 	events:{
 		'click .submit': 'uploadFile'
@@ -88,33 +90,42 @@ window.FileUploadView = Backbone.View.extend({
 		var self = this;
 		
 		var options = {
-			beforeSend: function() {
+			beforeSend: function(xhr, opts) {
 				$('.progress', $(self.el)).removeClass('hide');
 				$('.progress', $(self.el)).addClass('active').show();
 				
-				$('#message').html('');					
+				$('#message').html('');				
 			},
 			uploadProgress: function(event, position, total, percentComplete) {					
 				$('.progress-bar', $(self.el)).css('width',percentComplete+'%');							
 			},
 			complete: function(response) {				
-				$('.progress', $(self.el)).removeClass('active progress-striped');				
+				$('.progress', $(self.el)).removeClass('active progress-striped');
+				$('#upload-form', $(self.el)).fadeIn(3000);
 			}, 
 			success: function() {
-				$('#message').html('Successfully your file is uploaded !!');
+				$('#message').addClass('alert-success').html('Successfully your file is uploaded !!');
 			},
 			error: function(error) {
 				var errorMessage = JSON.parse(error.responseText);
-				console.log(errorMessage.message);
+				
 				$('.progress', $(self.el)).hide();
-				$('#message').html('Error: '+errorMessage.message);
+				$('#message').addClass('alert-danger').html('Error: '+errorMessage.message);
 			}
 		};
 		
 		$('#upload-form').submit(function() { 
-			 
-	        $(this).ajaxSubmit(options); 
-	 
+			
+			//Validate the form			
+			var valid = ($('#name',$(self.el)).val() != "") && ($('#myFile',$(self.el)).val() != "");
+			
+			if(valid) {
+				$(this).hide();
+				$(this).ajaxSubmit(options);
+			} else {
+				$('#message').addClass('alert-danger').html('The name and file selection is mandatory');
+			}
+			
 	        // !!! Important !!! 
 	        // always return false to prevent standard browser submit and page navigation 
 	        return false; 
