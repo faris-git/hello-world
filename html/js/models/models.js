@@ -70,20 +70,14 @@ window.UserProfile = Backbone.Model.extend({
 	}
 });
 
-window.FileUpload = Backbone.Model.extend({
+window.File = Backbone.Model.extend({
+	urlRoot:'/file',
 	initialize: function() {
 		
 	},
-	validation: {
-		name: {
-			required: true
-		},
-		myFile: {
-			required: true
-		}
-	},
 	defaults: {
 		name:"",
-		myFile:""
+		url:"",
+		date:""
 	}
 });

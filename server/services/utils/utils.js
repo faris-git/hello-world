@@ -26,7 +26,7 @@ exports.Utils = {
 			}
 			
 			var directory = parts.slice(0,Number(position + 1)).join('/');
-			   
+			
 			if(directory) {
 				//Check whether the directory exists
 				fs.stat(directory, function(err) {
@@ -48,5 +48,31 @@ exports.Utils = {
 			        }
 			    });
 			}
+		},
+		getDirectoryFiles: function(dir, files_, position, length) {
+			var self = this;
+			var files = fs.readdirSync(dir);
+			var position = position || 0;
+			var length = length || files.length;
+			
+			files_ = files_ || new Array();
+			
+			for (var i in files) {
+				if (!files.hasOwnProperty(i)) {					
+					continue;
+				}
+				
+				var dir_ = dir + '/' + files[i];
+				
+				if (fs.statSync(dir_).isDirectory()) {
+					self.getDirectoryFiles(dir_, files_, ++position, length);
+				} else {
+					files_.push(files[i]);
+				}
+			}
+			
+			if (position >= length) {
+				return files_;
+			}			
 		}
 };

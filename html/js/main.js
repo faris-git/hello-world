@@ -76,7 +76,7 @@ var AppRouter = Backbone.Router.extend({
 		}});
 	},
 	upload: function(id) {
-		$('#content').html(new FileUploadView({model:new FileUpload()}).el);
+		$('#content').html(new FileUploadView().el);
 	}
 });
 

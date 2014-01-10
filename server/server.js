@@ -31,7 +31,7 @@ app.configure(function() {
 	app.use(express.cookieParser('keyboard cat'));
 	app.use(express.methodOverride());
 	app.use(express.static(path.join(__dirname, '../html')));
-	app.use(express.session({secret: 'keyboard cat', cookie:{maxAge:60000}}));
+	app.use(express.session({secret: 'keyboard cat', cookie:{maxAge:6000000}}));
 	app.use(flash());
 	app.use(passport.initialize());
 	app.use(passport.session());
@@ -97,6 +97,12 @@ if(useMongoose) {
 		
 		//For upload file
 		app.post('/upload', filereader.uploadFile);
+		
+		app.get('/files', filereader.getUserFiles);
+		
+		app.get('/files/:userName', filereader.getUserFiles);
+		
+		app.get('/file/:userName/:fileName', filereader.getUserFile);
 	});
 	
 	mongoose.connect('mongodb://localhost/'+config.mongodb);

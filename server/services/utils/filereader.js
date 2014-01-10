@@ -24,10 +24,55 @@ xlsx.SheetNames.forEach(function(y){
 	}
 });*/
 
+exports.getUserFiles = function(req, res) {
+	var dir = fileDirectory+'users/';
+	var userName = req.params.userName;
+	
+	console.log("Requested for user files :: "+userName);
+	
+	if (req.user) {
+		if (userName && userName.length > 0) {
+			dir += userName + '/';
+			res.send({files:utils.getDirectoryFiles(dir, [], 1, 1)});	
+		} else 	
+			res.send({files:utils.getDirectoryFiles(dir)});		
+	} else {
+		res.status(401).send({message: 'Unauthorized user. Please login'});
+	}
+};
+
+exports.getUserFile = function(req, res) {
+	var dir = fileDirectory+'users/';
+	var userName = req.params.userName;
+	var fileName = req.params.fileName;
+	
+	if (req.user) {
+		if (userName && fileName) {
+			dir += userName + '/' + fileName;
+			
+			
+			fs.readFile(dir, function(err, data) {
+				if (err) {
+					res.send(403, {message: 'Error, the file no more exists in the system'});
+				}
+				if (data) {
+					res.download(dir);
+				}
+			});
+		}
+		
+	} else {
+		res.status(401).send({message: 'Unauthorized user. Please login'});
+	}
+};
+
+
+
 exports.uploadFile = function(req, res) {
 	
 	var files = req.files;
 	var fileName = req.body.name;
+	var fileDir;
 	
 	if (req.user) {
 		if (files) {
@@ -44,17 +89,19 @@ exports.uploadFile = function(req, res) {
 				}
 				
 				//Store the file specific to user folder inside /data/file/users
-				fileDirectory = fileDirectory+'users/'+req.user.userName;
-				utils.makeDirectory(fileDirectory, 1, function() {
+				fileDir = fileDirectory+'users/'+req.user.userName;
+				utils.makeDirectory(fileDir, 1, function() {
 					fs.readFile(filePath, function(err, data) {
 						
-						fs.writeFile(fileDirectory+'/'+fileName, function(err) {
+						fs.writeFile(fileDir+'/'+fileName, data, function(err) {
 							if(err){
 								console.log("There is error while storing the file in local directory!!!");
 								res.status(400).send({error: err, message: 'Error while storing the file'});
 							}
 							else{
 								console.log("Successfully moved the file in local directory.");
+								
+								//Now read and store the data in database
 								res.send({message:'Successfully uploaded the file'});
 							}
 						});

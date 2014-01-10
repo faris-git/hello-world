@@ -77,9 +77,8 @@ window.FileUploadView = Backbone.View.extend({
 	},
 	render: function() {
 		var self = this;
-		var model = self.model.toJSON();
 		
-		$(self.el).html(self.template(model));
+		$(self.el).html(self.template());
 		
 		return self;
 	},
@@ -133,3 +132,19 @@ window.FileUploadView = Backbone.View.extend({
 	}
 });
 
+/**
+ * File List View
+ */
+window.FileListView = Backbone.View.extend({
+	initialize: function() {
+		this.render();
+	},
+	render: function() {
+		var self = this;
+		var model = self.model.toJSON();
+		
+		$(self.el).html(self.template(model));
+		
+		return self;
+	}
+});
